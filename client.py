@@ -1,12 +1,12 @@
-# Importing the relevant libraries
 import websockets
 import asyncio
 import json
 import pygame
 
-width = 500
-height = 500
-window = pygame.display.set_mode((width, height))
+URL = "ws://127.0.0.1:7890"
+WIDTH = 500
+HEIGHT = 500
+window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 def redrawWindow(window, player, player2):
@@ -17,38 +17,23 @@ def redrawWindow(window, player, player2):
 
 
 async def listen():
-    url = "ws://127.0.0.1:7890"
-    async with websockets.connect(url) as ws:
-
-        while True:
-
-            # this will send something
-            await ws.send("location")
-            # this will receive any incoming message
-            msg = await ws.recv()
-            print(msg)
-
-
-def main():
     run = True
-    clock = pygame.time.Clock()
-    player1 = n.getPlayer()
+    async with websockets.connect(URL) as ws:
+        player1 = await ws.recv()
+        clock = pygame.time.Clock()
+        while run:
+            clock.tick(60)
+            # this will send something
+            await ws.send(player1)
+            # this will receive player2 position
+            player2 = await ws.recv()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    pygame.quit()
 
-    # Start the connection
-    asyncio.get_event_loop().run_until_complete(listen())
-
-    while run:
-        clock.tick(60)
-        # Send player1 to server to get back player2 object
-        player2 = n.send(player1)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-                pygame.quit()
-
-        player1.move()
-        redrawWindow(window, player1, player2)
+            player1.move()
+            redrawWindow(window, player1, player2)
 
 
-main()
+asyncio.get_event_loop().run_until_complete(listen())
