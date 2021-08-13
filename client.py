@@ -1,19 +1,17 @@
 # Importing the relevant libraries
 import websockets
 import asyncio
-import json
 
 # The main function that will handle connection and communication
 # with the server
 async def listen():
     url = "ws://127.0.0.1:7890"
+    # Connect to the server
     async with websockets.connect(url) as ws:
-
+        # Send a greeting message
+        await ws.send("Hello Server!")
+        # Stay alive forever, listening to incoming msgs
         while True:
-
-            # this will send something
-            await ws.send("location")
-            # this will receive any incoming message
             msg = await ws.recv()
             print(msg)
 

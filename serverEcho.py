@@ -1,33 +1,18 @@
-import json
+# Importing the relevant libraries
 import websockets
 import asyncio
 
 PORT = 7890
-print("Server listening on Port " + str(PORT))
 
-games = {}
-idCount = 0
+print("Server listening on Port " + str(PORT))
 
 
 async def echo(websocket, path):
-    print("A client just connected: ", websocket)
-
+    print("A client just connected")
     try:
-        # this will continue to get anything from server
-        async for string_obj in websocket:
-
-            # convert back to object
-            obj = json.loads(string_obj)
-            # do something with object
-            #
-            #
-            #
-            #
-
-            # turn back into string and send back
-            str_obj = json.dumps({})
-            await websocket.send(str_obj)
-
+        async for message in websocket:
+            print("Received message from client: " + message)
+            await websocket.send("Pong: " + message)
     except websockets.exceptions.ConnectionClosed as e:
         print("A client just disconnected")
 
