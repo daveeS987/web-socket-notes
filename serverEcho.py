@@ -1,5 +1,3 @@
-# Communicates with a client and server
-# Importing the relevant libraries
 import json
 import websockets
 import asyncio
