@@ -11,34 +11,17 @@ print("Server listening on Port " + str(PORT))
 async def echo(websocket, path):
     games = {}
     idCount = 0
-
     print("A client just connected: ", websocket)
-
-    idCount += 1
-    p = 0
-    gameId = (idCount - 1) // 2
-    if idCount % 2 == 1:
-        games[gameId] = Game(gameId)
-        print("Creating a new game...")
-    else:
-        games[gameId].ready = True
-        p = 1
 
     try:
         # this will continue to get anything from server
         async for string_obj in websocket:
+            # send back player position 1 or 2
+            # receive player position
+            # determine who it is
+            # send the other player position
 
-            # convert back to object
-            obj = json.loads(string_obj)
-            # do something with object
-            #
-            #
-            #
-            #
-
-            # turn back into string and send back
-            str_obj = json.dumps({})
-            await websocket.send(str_obj)
+            pass
 
     except websockets.exceptions.ConnectionClosed as e:
         print("A client just disconnected")
