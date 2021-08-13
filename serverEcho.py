@@ -5,15 +5,29 @@ import asyncio
 PORT = 7890
 print("Server listening on Port " + str(PORT))
 
+games = {}
+idCount = 0
+
 
 async def echo(websocket, path):
-    print("A client just connected")
+    print("A client just connected: ", websocket)
+
     try:
-        async for message in websocket:
-            print("message: ", message)
-            converted = json.loads(message)
-            print("converted: ", converted)
-            await websocket.send("Pong: " + message)
+        # this will continue to get anything from server
+        async for string_obj in websocket:
+
+            # convert back to object
+            obj = json.loads(string_obj)
+            # do something with object
+            #
+            #
+            #
+            #
+
+            # turn back into string and send back
+            str_obj = json.dumps({})
+            await websocket.send(str_obj)
+
     except websockets.exceptions.ConnectionClosed as e:
         print("A client just disconnected")
 
